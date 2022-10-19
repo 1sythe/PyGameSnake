@@ -188,7 +188,6 @@ def menu():
     starttext_pos.centery = 300
 
     if game.game_over:
-        font_small = pygame.font.Font("assets/fonts/Poppins-Medium.ttf", 20)
         yourscore = font_small.render(f"Your Score: {game.score}", True, (255, 255, 255))
         yourscore_pos = yourscore.get_rect()
         yourscore_pos.centerx = screen.get_rect().centerx
@@ -237,6 +236,20 @@ def menu():
     third_place_text_pos = third_place_text.get_rect()
     third_place_text_pos.centerx = screen.get_rect().centerx
     third_place_text_pos.centery = 575
+    
+    toggle_info_text = font_small.render(f"Press CTRL to toggle autplay.", True, (255, 255, 255))
+    toggle_info_text_pos = toggle_info_text.get_rect()
+    toggle_info_text_pos.centerx = screen.get_rect().centerx
+    toggle_info_text_pos.centery = 700
+    
+    autoplaystatus = "Autoplay is currently disabled."
+    if game.autoplay:
+        autoplaystatus = "Autoplay is currently enabled."
+    
+    autoplay_status_text = font_small.render(autoplaystatus, True, (255, 255, 255))
+    autoplay_status_text_pos = autoplay_status_text.get_rect()
+    autoplay_status_text_pos.centerx = screen.get_rect().centerx
+    autoplay_status_text_pos.centery = 730
 
     screen.blit(title_text, title_textpos)
     screen.blit(highscore, highscore_pos)
@@ -246,6 +259,8 @@ def menu():
     screen.blit(first_place_text, first_place_text_pos)
     screen.blit(second_place_text, second_place_text_pos)
     screen.blit(third_place_text, third_place_text_pos)
+    screen.blit(toggle_info_text, toggle_info_text_pos)
+    screen.blit(autoplay_status_text, autoplay_status_text_pos)
 
 
 def ingame():
@@ -386,6 +401,11 @@ def main():
                             game.user = game.user[:-1]
                     elif event.key == pygame.K_LSHIFT:
                         pass
+                    elif event.key == pygame.K_LCTRL:
+                        if not game.autoplay:
+                            game.autoplay = True
+                        else:
+                            game.autoplay = False
                     else:
                         if game.user == "":
                             game.user += pygame.key.name(event.key).upper()
